@@ -1,10 +1,11 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {TsconfigPathsPlugin} = require("tsconfig-paths-webpack-plugin");
 
 module.exports = {
   mode: 'development',
-  entry: './src/index.tsx',
+  entry: './src/app/index.tsx',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
@@ -30,6 +31,14 @@ module.exports = {
         type: 'asset/resource',
       },
     ]
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.jsx', '.js'],
+    plugins: [
+      new TsconfigPathsPlugin({
+        extensions: ['.tsx', '.ts'],
+      }),
+    ],
   },
   plugins: [
     new CleanWebpackPlugin(),

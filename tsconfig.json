@@ -13,6 +13,10 @@
     "outDir": "./dist/",
     "rootDir": "./src/",
     "sourceMap": true,
-    "lib": ["dom", "esnext"]
+    "lib": ["dom", "esnext"],
+    "baseUrl": ".",
+    "paths": {
+      "@": ["/src"],
+    }
   },
 }
