@@ -8,7 +8,6 @@ const Wrapper = styled.h1`
     
    h1 {
        text-align: left;
-       margin: 0;
        font-weight: 500;
        font-size: 20px;
        margin-bottom: 25px;

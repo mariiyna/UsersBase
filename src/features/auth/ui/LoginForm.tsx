@@ -4,29 +4,11 @@ import {Form as AntdForm, Input} from 'antd';
 import type { FormProps } from 'antd';
 import {SubmitButton} from 'src/shared/ui/SubmitButton'
 import styled from 'styled-components';
+import {formStyles} from "./loginForm.style";
 
 interface StyledFormProps extends FormProps<IFormFields> {}
 
-const Form = styled(AntdForm)<StyledFormProps>`
-    margin: 0 auto;
-    
-    .ant-form-item {
-        margin-bottom: 25px !important;
-        width: 100% !important;
-        
-        &:last-child {
-            margin-bottom: 0;
-            .ant-form-item-control {
-                text-align: right;
-            }
-        }
-    }
-
-    .ant-form-item-control {
-        max-width: 100% !important;
-        width: 100% !important;
-    }
-`
+const Form = styled(AntdForm)<StyledFormProps>`${formStyles}`
 
 const onFinish: FormProps<IFormFields>['onFinish'] = (values) => {
   console.log('Success:', values);
