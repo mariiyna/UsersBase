@@ -1,15 +1,21 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const {TsconfigPathsPlugin} = require("tsconfig-paths-webpack-plugin");
+import path from 'path';
+import { Configuration as WebpackConfiguration } from 'webpack';
+import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 
-module.exports = {
+interface Configuration extends WebpackConfiguration {
+  devServer?: WebpackDevServerConfiguration;
+}
+
+const config: Configuration = {
   mode: 'development',
   entry: './src/app/index.tsx',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/'
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -30,14 +36,15 @@ module.exports = {
         test: /\.(png|jpg|jpeg|gif|svg)$/i,
         type: 'asset/resource',
       },
-    ]
+    ],
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
     plugins: [
+      // Исправляем приведение типов для плагина путей
       new TsconfigPathsPlugin({
         extensions: ['.tsx', '.ts'],
-      }),
+      }) as any,
     ],
   },
   plugins: [
@@ -51,4 +58,6 @@ module.exports = {
     historyApiFallback: true,
     hot: true,
   },
-}
+};
+
+export default config;
