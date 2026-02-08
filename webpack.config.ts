@@ -41,7 +41,6 @@ const config: Configuration = {
   resolve: {
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
     plugins: [
-      // Исправляем приведение типов для плагина путей
       new TsconfigPathsPlugin({
         extensions: ['.tsx', '.ts'],
       }) as any,
