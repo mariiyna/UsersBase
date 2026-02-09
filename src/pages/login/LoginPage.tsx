@@ -16,7 +16,7 @@ const Wrapper = styled.div`
    }
 `
 
-export const LoginPage: React.FC = () => {
+export const LoginPage = () => {
   const token = localStorage.getItem('token');
 
   if (token) {

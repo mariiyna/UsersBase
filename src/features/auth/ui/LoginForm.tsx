@@ -7,11 +7,9 @@ import styled from 'styled-components';
 import {formStyles} from "./loginForm.style";
 import {useLogin} from "../model/useLogin";
 
-interface StyledFormProps extends FormProps<IUser> {}
+const Form = styled(AntdForm)<FormProps<IUser>>`${formStyles}`
 
-const Form = styled(AntdForm)<StyledFormProps>`${formStyles}`
-
-export const LoginForm: React.FC = () => {
+export const LoginForm = () => {
   const { mutate: login, isPending, error } = useLogin()
 
   const onFinish: FormProps<IUser>['onFinish'] = (user: IUser) => login(user);
@@ -64,7 +62,11 @@ export const LoginForm: React.FC = () => {
         ]}
         hasFeedback
       >
-        <Input.Password placeholder={'Пароль'} minLength={5}/>
+        <Input.Password
+          autoComplete="username"
+          placeholder={'Пароль'}
+          minLength={5}
+        />
       </Form.Item>
       <Form.Item label={null}>
         <SubmitButton
