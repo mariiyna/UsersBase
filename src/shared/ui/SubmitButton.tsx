@@ -11,17 +11,19 @@ const Button = styled(AntdButton)`
 interface ButtonProps {
   isLoading?: boolean;
   text: string;
-  onClick: () => void;
+  onClick?: () => void;
+  htmlType?: HtmlType;
 }
 
-export const SubmitButton: React.FC<ButtonProps> = ({isLoading = false, text, onClick}) => {
+type HtmlType = "button" | "submit" | "reset" | undefined
+
+export const SubmitButton: React.FC<ButtonProps> = ({isLoading = false, text, onClick, htmlType: htmlType = 'button'}) => {
   return (
     <Button
       type="primary"
       onClick={onClick}
       loading={isLoading}
-      htmlType="submit"
-    >
+      htmlType={htmlType}>
       {text}
     </Button>
   )
