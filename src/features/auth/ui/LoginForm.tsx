@@ -62,7 +62,11 @@ export const LoginForm = () => {
         ]}
         hasFeedback
       >
-        <Input.Password placeholder={'Пароль'} minLength={5}/>
+        <Input.Password
+          autoComplete="username"
+          placeholder={'Пароль'}
+          minLength={5}
+        />
       </Form.Item>
       <Form.Item label={null}>
         <SubmitButton
