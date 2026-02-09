@@ -1,4 +1,4 @@
 export {LoginForm} from './ui/LoginForm';
-export {ProtectedRoute} from './ui/ProtectedRoute';
+export {ProtectedRoute} from '../../app/ProtectedRoute';
 
-export {useLogin} from './hooks/useLogin'
+export {useLogin} from './model/useLogin'

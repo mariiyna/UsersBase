@@ -1,5 +1,5 @@
 import {useMutation} from "@tanstack/react-query";
-import {IUser} from "../types/IUser";
+import {IUser} from "../../../entities/user/model/IUser";
 import {login} from '../api/login';
 import {message} from "antd";
 import {useNavigate} from 'react-router-dom';

@@ -1,11 +1,11 @@
 import React, {useEffect} from "react";
-import {IUser} from "../types/IUser";
+import {IUser} from "../../../entities/user/model/IUser";
 import {Form as AntdForm, Input, message} from 'antd';
 import type { FormProps } from 'antd';
 import {SubmitButton} from 'src/shared/ui/SubmitButton'
 import styled from 'styled-components';
 import {formStyles} from "./loginForm.style";
-import {useLogin} from "../hooks/useLogin";
+import {useLogin} from "../model/useLogin";
 
 interface StyledFormProps extends FormProps<IUser> {}
 
@@ -25,7 +25,7 @@ export const LoginForm: React.FC = () => {
       message.error('Ошибка авторизации')
     }
   }, [error]);
-  
+
   return (
     <Form
       name="basic"
