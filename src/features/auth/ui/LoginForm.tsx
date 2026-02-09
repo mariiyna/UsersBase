@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {IUser} from "../../../entities/user/model/IUser";
+import {IUserFields} from "../../../entities";
 import {Form as AntdForm, Input, message} from 'antd';
 import type { FormProps } from 'antd';
 import {SubmitButton} from 'src/shared/ui/SubmitButton'
@@ -7,14 +7,14 @@ import styled from 'styled-components';
 import {formStyles} from "./loginForm.style";
 import {useLogin} from "../model/useLogin";
 
-const Form = styled(AntdForm)<FormProps<IUser>>`${formStyles}`
+const Form = styled(AntdForm)<FormProps<IUserFields>>`${formStyles}`
 
 export const LoginForm = () => {
   const { mutate: login, isPending, error } = useLogin()
 
-  const onFinish: FormProps<IUser>['onFinish'] = (user: IUser) => login(user);
+  const onFinish: FormProps<IUserFields>['onFinish'] = (user: IUserFields) => login(user);
 
-  const onFinishFailed: FormProps<IUser>['onFinishFailed'] = (errorInfo) => {
+  const onFinishFailed: FormProps<IUserFields>['onFinishFailed'] = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
@@ -34,7 +34,7 @@ export const LoginForm = () => {
       onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
-      <Form.Item<IUser>
+      <Form.Item<IUserFields>
         name="login"
         rules={[
           {
@@ -48,7 +48,7 @@ export const LoginForm = () => {
       >
         <Input placeholder={'Логин'}/>
       </Form.Item>
-      <Form.Item<IUser>
+      <Form.Item<IUserFields>
         name="password"
         rules={[
           {
