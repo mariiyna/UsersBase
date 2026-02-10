@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {Pagination} from "antd";
+import {Button} from "antd";
 
 export const Wrapper = styled.div`
   max-width: 1200px;
@@ -25,7 +25,7 @@ export const Actions = styled.div`
     flex-shrink: 0;
 `;
 
-export const StyledPagination = styled(Pagination)`
-    width: 20vw;
-    margin: 0 auto;
+export const LoadButton = styled(Button)`
+    display: flex;
+    justify-self: center;
 `
