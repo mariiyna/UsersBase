@@ -26,7 +26,7 @@ export const LoginForm = () => {
 
   return (
     <Form
-      name="basic"
+      name="loginForm"
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
       style={{ maxWidth: 600 }}

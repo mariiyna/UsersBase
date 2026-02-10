@@ -1,12 +1,12 @@
-import React, {Dispatch, SetStateAction} from 'react';
-import {Input, Modal} from 'antd';
+import React, {Dispatch, SetStateAction, useEffect} from 'react';
+import {Form, Input, Modal} from 'antd';
 import {SubmitButton} from "../../../shared/ui/SubmitButton";
 import {IUserModalFields} from "../model/types";
 import * as S from './UserModal.styles';
 import {IUserData} from "../../../entities";
 
 interface UserModalProps {
-  user: IUserData;
+  user: IUserData | null;
   isModalOpen: boolean;
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
 }
@@ -15,6 +15,20 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
+  const [form] = Form.useForm<IUserModalFields>()
+
+  useEffect(() => {
+    if (isModalOpen && user) {
+      form.setFieldsValue({
+        id: user.id,
+        name: user.name,
+        avatar: user.avatar
+      })
+    } else if (isModalOpen) {
+      form.resetFields();
+    }
+  }, [user, isModalOpen]);
 
   return (
     <>
@@ -25,7 +39,9 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
         onCancel={handleCancel}
       >
         <S.Form
-          name="basic"
+          name="ModalForm"
+          form={form}
+          preserve={false}
           // onFinish={onFinish}
           autoComplete="off"
         >
@@ -34,7 +50,10 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
             label='Id'
             layout="vertical"
           >
-            <Input type='number' ={user.id}/>
+            <Input
+              type='number'
+              disabled
+            />
           </S.Form.Item>
           <S.Form.Item<IUserModalFields>
             name="name"

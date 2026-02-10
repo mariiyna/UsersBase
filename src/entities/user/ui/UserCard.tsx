@@ -2,11 +2,11 @@ import React, {useState} from "react";
 import {IUserData} from "../../index";
 import { List, Avatar } from 'antd';
 import {formatData} from "../../../shared";
-import {UserModal} from "../../../features/user-management";
 import styled from "styled-components";
 
 interface UserCardProps {
   user: IUserData;
+  onClick: (user: IUserData) => void;
 }
 
 const Wrapper = styled.div`
@@ -21,10 +21,8 @@ const Wrapper = styled.div`
   }
 `
 
-export const UserCard: React.FC<UserCardProps> = ({user}) => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+export const UserCard: React.FC<UserCardProps> = ({user, onClick}) => {
 
-  // const
   return (
     <Wrapper>
       <List.Item>
@@ -34,23 +32,19 @@ export const UserCard: React.FC<UserCardProps> = ({user}) => {
             src={user.avatar}
             size={'large'}
             className='clickable-elem'
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => onClick(user)}
           />}
           title={
           <span
             className='clickable-elem'
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => onClick(user)}
           >
             {user.name}
           </span>}
           description={`Зарегистрирован ${formatData(user.createdAt)}`}
         />
       </List.Item>
-      <UserModal
-        user={user}
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-      />
+
     </Wrapper>
   )
 }

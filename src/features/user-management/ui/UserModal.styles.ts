@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import {IUserFields} from "../../../entities";
 import {Form as AntdForm, type FormProps} from 'antd';
+import {IUserModalFields} from "../model/types";
 
-export const Form = styled(AntdForm)<FormProps<IUserFields>>`
+export const Form = styled(AntdForm)<FormProps<IUserModalFields>>`
   .ant-form-item {
     margin-bottom: 0.5rem;
   }
