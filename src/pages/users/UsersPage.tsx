@@ -16,10 +16,9 @@ const UsersPage: React.FC = () => {
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalMode, setModalMode] = useState<ModalModes>('edit')
-
   const [user, setUser] = useState<IUserData | null>(null);
 
-  const [ users, setUsers ] = useState<IUserData[] | undefined>(undefined);
+  const [users, setUsers] = useState<IUserData[]>([]);
   const { isLoading, data } = useUsers(currentPage, USERS_ON_PAGE);
 
   const {mutate: logout, isLoading: isLogoutLoading} = useLogout()
@@ -41,23 +40,34 @@ const UsersPage: React.FC = () => {
 
   useEffect(() => {
     if (data?.length) {
-      setUsers(prev => {
-        if (prev) {
-          return [...prev, ...data]
-        }
-        return [...data]
-      })
+      setUsers((prev) => {
+        const existingIds = new Set(prev.map((u) => u.id));
+        const newUsers = data.filter((u) => !existingIds.has(u.id));
+        return [...prev, ...newUsers];
+      });
+
+      if (data.length < USERS_ON_PAGE) {
+        setHasMore(false);
+      }
     }
   }, [data]);
 
+  const handleUserCreated = (newUser: IUserData) => {
+    setUsers((prev) => {
+      if (prev.some((u) => u.id === newUser.id)) {
+        return prev;
+      }
+      return [ ...prev, newUser];
+    });
+  };
+
   useEffect(() => {
-    if (data?.length === 0) {
-      setHasMore(false)
-      message.info('Вы загрузили всех пользователей!')
-      return
+    if (data?.length === 0 && !isLoading) {
+      message.info('Вы загрузили всех пользователей!');
+      setHasMore(false);
     }
     setHasMore(true)
-  }, [data]);
+  }, [data, isLoading]);
 
   return (
     <>
@@ -101,6 +111,7 @@ const UsersPage: React.FC = () => {
         mode={modalMode}
         user={user}
         isModalOpen={isModalOpen}
+        onUserCreated={handleUserCreated}
         setIsModalOpen={setIsModalOpen}
       />
     </>

@@ -1,6 +1,5 @@
-import {IUserData} from "../../entities";
-import {api} from "./AxiosClient";
-import {IStatusMessage} from "./types";
+import {IUserCreateData, IUserData} from "../../../entities";
+import {api} from "../clients/AxiosClient";
 
 class UserApi {
   private path = '/users'
@@ -15,8 +14,8 @@ class UserApi {
     return response.data
   }
 
-  async addUser(newUser: IUserData): Promise<IStatusMessage> {
-    const response = await api.post<IStatusMessage>(this.path, newUser)
+  async addUser(newUser: IUserCreateData): Promise<IUserData> {
+    const response = await api.post<IUserData>(this.path, newUser)
     return response.data
   }
 }

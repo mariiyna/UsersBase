@@ -1,6 +1,6 @@
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {queryClient, userApi} from "../../../shared";
-import {IUserData} from "../model/types";
+import {IUserCreateData} from "../model/types";
 
 export const useUsers =
   (page: number = 1, limit: number) => {
@@ -13,7 +13,10 @@ export const useUsers =
 
 export const useAddUser = () => {
   return useMutation({
-    mutationFn: (newUser:IUserData) => userApi.addUser(newUser),
+    mutationFn: (newUser:IUserCreateData) => userApi.addUser(newUser),
     onSuccess: ()=> queryClient.invalidateQueries({queryKey: ['users']}),
+    onError: (error) => {
+      console.log('Ошибка при создании пользователя', error)
+    }
   })
 }
