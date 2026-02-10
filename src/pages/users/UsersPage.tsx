@@ -42,38 +42,41 @@ const UsersPage: React.FC = () => {
   }, [data]);
 
   return (
-    <S.Wrapper>
-      <S.Container>
-        <S.Content>
-          <List
-            dataSource={users}
-            renderItem={user=>
-              <UserCard
-                key={user.id}
-                user={user}
-             />}
-          >
-            <S.LoadButton
-              loading={isLoading}
-              disabled={!hasMore}
-              onClick={loadMoreHandler}
+    <>
+      <S.Wrapper>
+        <S.Container>
+          <S.Content>
+            <List
+              dataSource={users}
+              renderItem={user=>
+                <UserCard
+                  key={user.id}
+                  user={user}
+               />}
             >
-              Загрузить еще
-            </S.LoadButton>
-          </List>
+              <S.LoadButton
+                loading={isLoading}
+                disabled={!hasMore}
+                onClick={loadMoreHandler}
+              >
+                Загрузить еще
+              </S.LoadButton>
+            </List>
+            <S.Actions>
+              <SubmitButton text={'Создать пользователя'}/>
+            </S.Actions>
+          </S.Content>
           <S.Actions>
-            <SubmitButton text={'Создать пользователя'}/>
+            <SubmitButton
+              isLoading={isLogoutLoading}
+              onClick={logout}
+              text={'Выход'}
+            />
           </S.Actions>
-        </S.Content>
-        <S.Actions>
-          <SubmitButton
-            isLoading={isLogoutLoading}
-            onClick={logout}
-            text={'Выход'}
-          />
-        </S.Actions>
-      </S.Container>
-    </S.Wrapper>
+        </S.Container>
+      </S.Wrapper>
+
+    </>
   )
 }
 export default UsersPage
