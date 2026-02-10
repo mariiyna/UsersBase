@@ -4,6 +4,7 @@ import {List, message} from 'antd';
 import * as S from './UserPage.styles';
 import {UserCard} from "../../entities";
 import {SubmitButton} from "../../shared/ui/SubmitButton";
+import {useLogout} from "../../features/auth";
 
 const USERS_ON_PAGE = 10;
 
@@ -13,6 +14,8 @@ const UsersPage: React.FC = () => {
   const [hasMore, setHasMore] = useState<boolean>(false);
 
   const { isLoading, data } = useUsers(currentPage, USERS_ON_PAGE);
+
+  const {mutate: logout, isLoading: isLogoutLoading} = useLogout()
 
   const loadMoreHandler = () => {
     setCurrentPage(prev => prev + 1)
@@ -44,7 +47,7 @@ const UsersPage: React.FC = () => {
         <S.Content>
           <List
             dataSource={users}
-            renderItem={user =>
+            renderItem={user=>
               <UserCard
                 key={user.id}
                 user={user}
@@ -62,9 +65,13 @@ const UsersPage: React.FC = () => {
             <SubmitButton text={'Создать пользователя'}/>
           </S.Actions>
         </S.Content>
-        <div>
-          <SubmitButton text={'Выход'}/>
-        </div>
+        <S.Actions>
+          <SubmitButton
+            isLoading={isLogoutLoading}
+            onClick={logout}
+            text={'Выход'}
+          />
+        </S.Actions>
       </S.Container>
     </S.Wrapper>
   )

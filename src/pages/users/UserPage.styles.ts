@@ -12,6 +12,10 @@ export const  Container = styled.div`
   gap: 2rem;
   padding: clamp(1rem, 2vw, 3rem) clamp(1.5rem, 6vw, 4rem);
   margin: 0 auto;
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
 `
 
 export const Content = styled.div`
@@ -19,10 +23,16 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  
+
 `;
 
 export const Actions = styled.div`
     flex-shrink: 0;
+
+    @media (max-width: 500px) {
+       text-align: center;
+    }
 `;
 
 export const LoadButton = styled(Button)`

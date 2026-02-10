@@ -1,4 +1,4 @@
-const login = (login: string, password: string): Promise<string> => {
+export const login = (login: string, password: string): Promise<string> => {
   return new Promise((res, rej) => {
     setTimeout(() => {
       if (login === 'admin' && password === 'admin') {
@@ -10,4 +10,11 @@ const login = (login: string, password: string): Promise<string> => {
   })
 }
 
-export {login}
+export const logout = (): Promise<string> => {
+  return new Promise((res) => {
+    setTimeout(() => {
+      res('Success')
+    }, 1500)
+  })
+}
+
