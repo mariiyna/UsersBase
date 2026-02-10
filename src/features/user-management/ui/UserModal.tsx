@@ -1,7 +1,7 @@
 import React, {Dispatch, SetStateAction, useEffect} from 'react';
 import {Form, Input, Modal} from 'antd';
 import {SubmitButton} from "../../../shared/ui/SubmitButton";
-import {IUserModalFields} from "../model/types";
+import {IUserModalFields, ModalModes} from "../model/types";
 import * as S from './UserModal.styles';
 import {IUserData} from "../../../entities";
 
@@ -9,9 +9,10 @@ interface UserModalProps {
   user: IUserData | null;
   isModalOpen: boolean;
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
+  mode: ModalModes;
 }
 
-export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen, user}) => {
+export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen, user, mode}) => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -33,7 +34,7 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
   return (
     <>
       <Modal
-        title="Basic Modal"
+        title={mode === 'edit'? 'Редактирование пользователя': 'Создание пользователя'}
         open={isModalOpen}
         footer={[]}
         onCancel={handleCancel}
@@ -45,7 +46,7 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
           // onFinish={onFinish}
           autoComplete="off"
         >
-          <S.Form.Item<IUserModalFields>
+          {mode === 'edit' && (<S.Form.Item<IUserModalFields>
             name="id"
             label='Id'
             layout="vertical"
@@ -54,7 +55,7 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
               type='number'
               disabled
             />
-          </S.Form.Item>
+          </S.Form.Item>)}
           <S.Form.Item<IUserModalFields>
             name="name"
             label='Имя'
@@ -70,14 +71,17 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
             <Input type='url'/>
           </S.Form.Item>
           <S.FormAction>
-            <SubmitButton
-              htmlType='button'
-              text='Удалить'
-            />
+            { mode === 'edit' && (
+              <SubmitButton
+                htmlType='button'
+                text='Удалить'
+              />)
+            }
+            <div></div>
             <div>
               <SubmitButton
                 htmlType='submit'
-                text='Сохранить'
+                text={mode === 'edit' ? 'Сохранить': 'Создать'}
               />
               <SubmitButton
                 onClick={handleCancel}
