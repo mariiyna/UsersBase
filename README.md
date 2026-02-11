@@ -19,3 +19,7 @@
 
 ● Архитектура FSD (Feature-Sliced Design)
 
+
+# Авторизация
+- Логин - admin
+- Пароль- admin
