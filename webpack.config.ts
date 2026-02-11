@@ -42,6 +42,7 @@ const config: Configuration = {
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
     plugins: [
       new TsconfigPathsPlugin({
+        configFile: path.resolve(__dirname, 'tsconfig.json'),
         extensions: ['.tsx', '.ts'],
       }) as any,
     ],

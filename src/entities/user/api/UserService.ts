@@ -1,6 +1,6 @@
 import {useMutation, useQuery} from "@tanstack/react-query";
-import {queryClient, userApi} from "../../../shared";
-import {IUserCreateData} from "../model/types";
+import {queryClient, userApi} from "@/shared";
+import {IUserCreateData} from "@/entities";
 
 export const useUsers =
   (page: number = 1, limit: number) => {

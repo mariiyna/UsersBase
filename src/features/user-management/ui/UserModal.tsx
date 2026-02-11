@@ -1,9 +1,9 @@
 import React, {Dispatch, SetStateAction, useEffect} from 'react';
 import {Input, Modal} from 'antd';
-import {SubmitButton} from "../../../shared/ui/SubmitButton";
+import {SubmitButton} from "@/shared/ui/SubmitButton";
 import {IUserModalFields, ModalModes} from "../model/types";
 import * as S from './UserModal.styles';
-import {IUserData} from "../../../entities";
+import {IUserData} from "@/entities";
 import {useUserModal} from "../model/useUserModal";
 
 export interface IUserModalProps {

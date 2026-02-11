@@ -1,5 +1,5 @@
 import {notification} from "antd/lib";
-import {IUserCreateData,  useAddUser, useDeleteUser, useEditUser} from "../../../entities";
+import {IUserCreateData,  useAddUser, useDeleteUser, useEditUser} from "@/entities";
 import {IUserModalFields} from "./types";
 import { useState} from "react";
 import {Form} from "antd";

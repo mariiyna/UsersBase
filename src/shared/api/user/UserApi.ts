@@ -1,5 +1,5 @@
-import {IUserCreateData, IUserData} from "../../../entities";
-import {api} from "../clients/AxiosClient";
+import {IUserCreateData, IUserData} from "@/entities";
+import {api} from "@/shared";
 
 class UserApi {
   private path = '/users'

@@ -1,7 +1,7 @@
-import React, {useState} from "react";
-import {IUserData} from "../../index";
+import React from "react";
+import {IUserData} from "@/entities";
 import { List, Avatar } from 'antd';
-import {formatData} from "../../../shared";
+import {formatData} from "@/shared";
 import styled from "styled-components";
 
 interface UserCardProps {

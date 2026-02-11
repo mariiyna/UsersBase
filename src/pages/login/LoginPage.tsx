@@ -1,5 +1,5 @@
 import React from 'react';
-import {LoginForm} from "../../features/auth";
+import {LoginForm} from "@/features/auth";
 import styled from "styled-components";
 import { Navigate } from 'react-router-dom';
 

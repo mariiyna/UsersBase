@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {Form as AntdForm, type FormProps} from 'antd';
-import {IUserModalFields} from "../model/types";
+import {IUserModalFields} from "@/features/user-management/model/types";
 import {CloseOutlined} from "@ant-design/icons";
 
 export const Form = styled(AntdForm)<FormProps<IUserModalFields>>`

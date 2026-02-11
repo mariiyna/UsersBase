@@ -1,11 +1,11 @@
 import React, {useEffect} from "react";
-import {IUserFields} from "../../../entities";
+import {IUserFields} from "@/entities";
 import {Form as AntdForm, Input, message} from 'antd';
 import type { FormProps } from 'antd';
 import {SubmitButton} from 'src/shared/ui/SubmitButton'
 import styled from 'styled-components';
-import {formStyles} from "./loginForm.style";
-import {useLogin} from "../model/useLogin";
+import {formStyles} from "@/features/auth/ui/loginForm.style";
+import {useLogin} from "@/features/auth";
 
 const Form = styled(AntdForm)<FormProps<IUserFields>>`${formStyles}`
 

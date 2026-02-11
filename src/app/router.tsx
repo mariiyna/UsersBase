@@ -1,12 +1,10 @@
 import React from 'react';
 import {createBrowserRouter} from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
-import {LoginPage} from '../pages/login/LoginPage'
-import UsersPage from '../pages/users/UsersPage'
-import {NotFoundPage} from '../pages/not-found/NotFoundPage'
-
-import {ProtectedRoute} from "../features/auth";
-
+import {LoginPage} from '@/pages/login/LoginPage'
+import UsersPage from '@/pages/users/UsersPage'
+import {NotFoundPage} from '@/pages/not-found/NotFoundPage'
+import{ProtectedRoute} from "@/app/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {

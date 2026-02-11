@@ -1,6 +1,6 @@
 import {useMutation} from "@tanstack/react-query";
-import {IUserFields} from "../../../entities";
-import {login} from '../api/auth';
+import {IUserFields} from "@/entities";
+import {login} from "@/features/auth/api/auth";
 import {message} from "antd";
 import {useNavigate} from 'react-router-dom';
 
