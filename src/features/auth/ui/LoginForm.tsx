@@ -1,41 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { IUserFields } from '@/entities';
-import { Form as AntdForm, Input, message } from 'antd';
+import { Input } from 'antd';
 import type { FormProps } from 'antd';
 import { SubmitButton } from 'src/shared/ui/SubmitButton';
-import styled from 'styled-components';
-import { formStyles } from '@/features/auth/ui/loginForm.style';
 import { useLogin } from '@/features/auth';
-
-const Form = styled(AntdForm)<FormProps<IUserFields>>`
-  ${formStyles}
-`;
+import { Form } from '@/features/auth/ui/loginForm.style';
 
 export const LoginForm = () => {
-  const { mutate: login, isPending, error } = useLogin();
+  const { mutate: login, isPending } = useLogin();
 
   const onFinish: FormProps<IUserFields>['onFinish'] = (user: IUserFields) => login(user);
 
-  const onFinishFailed: FormProps<IUserFields>['onFinishFailed'] = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
-
-  useEffect(() => {
-    if (error) {
-      message.error('Ошибка авторизации');
-    }
-  }, [error]);
-
   return (
-    <Form
-      name="loginForm"
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}
-      style={{ maxWidth: 600 }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off"
-    >
+    <Form name="loginForm" onFinish={onFinish} autoComplete="off">
       <Form.Item<IUserFields>
         name="login"
         rules={[
