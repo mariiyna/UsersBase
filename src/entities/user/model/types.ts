@@ -14,5 +14,3 @@ export interface IUserCreateData {
   name: string;
   avatar: string;
 }
-
-export type IUserEditData = Partial<IUserCreateData>;

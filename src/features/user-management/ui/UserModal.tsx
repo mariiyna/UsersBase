@@ -1,11 +1,10 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
-import {Form, Input, message, Modal} from 'antd';
+import {Form, Input, Modal} from 'antd';
 import {SubmitButton} from "../../../shared/ui/SubmitButton";
 import {IUserModalFields, ModalModes} from "../model/types";
 import * as S from './UserModal.styles';
-import {IUserData, IUserEditData, useAddUser, useEditUser} from "../../../entities";
+import {IUserCreateData, IUserData, useAddUser, useEditUser} from "../../../entities";
 import {notification} from "antd/lib";
-import {queryClient} from "../../../shared";
 
 interface UserModalProps {
   user: IUserData | null;
@@ -47,29 +46,27 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
         }
       })
     } else if (mode === 'edit' && user) {
-      const editingUser: IUserEditData = {};
+      const editingUser: IUserCreateData = {
+        name: user.name,
+        avatar: user.avatar
+      };
+      console.log(newUserAvatar, newUserName)
 
-      if (newUserName !== user.name && newUserName) {
-        editingUser['name'] = newUserName
+      if (newUserAvatar) {
+        editingUser.avatar = newUserAvatar
       }
-      if (newUserAvatar !== user.avatar && newUserAvatar) {
-        editingUser['avatar'] = newUserAvatar
+      if (newUserName) {
+        editingUser.name = newUserName
       }
 
-      if (Object.keys(editingUser).length > 0) {
-        editUser({id: user.id, user: editingUser}, {
-          onSuccess: () => {
-            notification.success({
-              message: `Пользователь успешно обновлен!`,
-            })
-            // setIsModalOpen(false)
-          }
-        })
-      } else {
-        notification.success({
-          message: 'Внесите изменения перед сохранением!'
-        })
-      }
+      editUser({id: user.id, user: editingUser}, {
+        onSuccess: () => {
+          notification.success({
+            message: `Пользователь успешно обновлен!`,
+          })
+          setIsModalOpen(false)
+        }
+      })
     }
   }
 
@@ -114,6 +111,7 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
             name="name"
             label='Имя'
             layout="vertical"
+            rules={[{required: true, message: 'Введите имя!'}]}
           >
             <Input
               type='text'
@@ -125,6 +123,7 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
             name="avatar"
             label='Ссылка на аватарку'
             layout="vertical"
+            rules={[{required: true, message: 'Введите url аватара!'}]}
           >
             <Input
               type='url'
@@ -153,7 +152,7 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
               <SubmitButton
                 onClick={handleCancel}
                 htmlType='button'
-                isLoading={isUserCreating && isUserEditing}
+                isLoading={isUserCreating || isUserEditing}
                 text='Отмена'
               />
             </div>
