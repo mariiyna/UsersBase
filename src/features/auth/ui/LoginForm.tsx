@@ -1,16 +1,18 @@
-import React, {useEffect} from "react";
-import {IUserFields} from "@/entities";
-import {Form as AntdForm, Input, message} from 'antd';
+import React, { useEffect } from 'react';
+import { IUserFields } from '@/entities';
+import { Form as AntdForm, Input, message } from 'antd';
 import type { FormProps } from 'antd';
-import {SubmitButton} from 'src/shared/ui/SubmitButton'
+import { SubmitButton } from 'src/shared/ui/SubmitButton';
 import styled from 'styled-components';
-import {formStyles} from "@/features/auth/ui/loginForm.style";
-import {useLogin} from "@/features/auth";
+import { formStyles } from '@/features/auth/ui/loginForm.style';
+import { useLogin } from '@/features/auth';
 
-const Form = styled(AntdForm)<FormProps<IUserFields>>`${formStyles}`
+const Form = styled(AntdForm)<FormProps<IUserFields>>`
+  ${formStyles}
+`;
 
 export const LoginForm = () => {
-  const { mutate: login, isPending, error } = useLogin()
+  const { mutate: login, isPending, error } = useLogin();
 
   const onFinish: FormProps<IUserFields>['onFinish'] = (user: IUserFields) => login(user);
 
@@ -20,7 +22,7 @@ export const LoginForm = () => {
 
   useEffect(() => {
     if (error) {
-      message.error('Ошибка авторизации')
+      message.error('Ошибка авторизации');
     }
   }, [error]);
 
@@ -39,42 +41,35 @@ export const LoginForm = () => {
         rules={[
           {
             required: true,
-            message: 'Пожалуйста, введите логин!'
+            message: 'Пожалуйста, введите логин!',
           },
           {
-          min: 3,
-          message: 'Логин должен содержать минимум 3 символа!'
-        }]}
+            min: 3,
+            message: 'Логин должен содержать минимум 3 символа!',
+          },
+        ]}
       >
-        <Input placeholder={'Логин'}/>
+        <Input placeholder={'Логин'} />
       </Form.Item>
       <Form.Item<IUserFields>
         name="password"
         rules={[
           {
             required: true,
-            message: 'Пожалуйста, введите пароль!'
+            message: 'Пожалуйста, введите пароль!',
           },
           {
             min: 5,
-            message: 'Пароль должен содержать минимум 5 символов!'
-          }
+            message: 'Пароль должен содержать минимум 5 символов!',
+          },
         ]}
         hasFeedback
       >
-        <Input.Password
-          autoComplete="username"
-          placeholder={'Пароль'}
-          minLength={5}
-        />
+        <Input.Password autoComplete="username" placeholder={'Пароль'} minLength={5} />
       </Form.Item>
       <Form.Item label={null}>
-        <SubmitButton
-          text={'Войти'}
-          isLoading={isPending}
-          htmlType={'submit'}
-        />
+        <SubmitButton text={'Войти'} isLoading={isPending} htmlType={'submit'} />
       </Form.Item>
     </Form>
-  )
-}
+  );
+};

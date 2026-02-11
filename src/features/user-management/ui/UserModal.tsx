@@ -1,10 +1,10 @@
-import React, {Dispatch, SetStateAction, useEffect} from 'react';
-import {Input, Modal} from 'antd';
-import {SubmitButton} from "@/shared/ui/SubmitButton";
-import {IUserModalFields, ModalModes} from "../model/types";
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import { Input, Modal } from 'antd';
+import { SubmitButton } from '@/shared/ui/SubmitButton';
+import { IUserModalFields, ModalModes } from '../model/types';
 import * as S from './UserModal.styles';
-import {IUserData} from "@/entities";
-import {useUserModal} from "../model/useUserModal";
+import { IUserData } from '@/entities';
+import { useUserModal } from '../model/useUserModal';
 
 export interface IUserModalProps {
   user: IUserData | null;
@@ -16,7 +16,15 @@ export interface IUserModalProps {
   onUserDeleted: (deletedUser: IUserData) => void;
 }
 
-export const UserModal: React.FC<IUserModalProps> = ({isModalOpen, setIsModalOpen, user, mode, onUserCreated, onUserUpdated, onUserDeleted}) => {
+export const UserModal: React.FC<IUserModalProps> = ({
+  isModalOpen,
+  setIsModalOpen,
+  user,
+  mode,
+  onUserCreated,
+  onUserUpdated,
+  onUserDeleted,
+}) => {
   const {
     isUserCreating,
     isUserEditing,
@@ -28,16 +36,24 @@ export const UserModal: React.FC<IUserModalProps> = ({isModalOpen, setIsModalOpe
     newUserName,
     setNewUserName,
     setNewUserAvatar,
-    handleCloseIcon
-  } = useUserModal({mode, user, onUserCreated, onUserUpdated, onUserDeleted, setIsModalOpen, isModalOpen});
+    handleCloseIcon,
+  } = useUserModal({
+    mode,
+    user,
+    onUserCreated,
+    onUserUpdated,
+    onUserDeleted,
+    setIsModalOpen,
+    isModalOpen,
+  });
 
   useEffect(() => {
     if (mode === 'edit' && isModalOpen && user) {
       form.setFieldsValue({
         id: user.id,
         name: user.name,
-        avatar: user.avatar
-      })
+        avatar: user.avatar,
+      });
     } else if (isModalOpen) {
       form.resetFields();
     }
@@ -46,12 +62,12 @@ export const UserModal: React.FC<IUserModalProps> = ({isModalOpen, setIsModalOpe
   return (
     <>
       <Modal
-        title={mode === 'edit'? 'Редактирование пользователя': 'Создание пользователя'}
+        title={mode === 'edit' ? 'Редактирование пользователя' : 'Создание пользователя'}
         open={isModalOpen}
         footer={[]}
         closable={false}
       >
-        <S.CloseIcon onClick={handleCloseIcon}/>
+        <S.CloseIcon onClick={handleCloseIcon} />
         <S.Form
           name="ModalForm"
           form={form}
@@ -59,70 +75,63 @@ export const UserModal: React.FC<IUserModalProps> = ({isModalOpen, setIsModalOpe
           onFinish={handleSubmit}
           autoComplete="off"
         >
-          {mode === 'edit' && (<S.Form.Item<IUserModalFields>
-            name="id"
-            label='Id'
-            layout="vertical"
-          >
-            <Input
-              type='number'
-              disabled
-            />
-          </S.Form.Item>)}
+          {mode === 'edit' && (
+            <S.Form.Item<IUserModalFields> name="id" label="Id" layout="vertical">
+              <Input type="number" disabled />
+            </S.Form.Item>
+          )}
           <S.Form.Item<IUserModalFields>
             name="name"
-            label='Имя'
+            label="Имя"
             layout="vertical"
-            rules={[{required: true, message: 'Введите имя!'}]}
+            rules={[{ required: true, message: 'Введите имя!' }]}
           >
             <Input
-              type='text'
+              type="text"
               value={newUserName}
               onChange={(e) => setNewUserName(e.target.value)}
             />
           </S.Form.Item>
           <S.Form.Item<IUserModalFields>
             name="avatar"
-            label='Ссылка на аватарку'
+            label="Ссылка на аватарку"
             layout="vertical"
-            rules={[{required: true, message: 'Введите url аватара!'}]}
+            rules={[{ required: true, message: 'Введите url аватара!' }]}
           >
             <Input
-              type='url'
+              type="url"
               value={newUserAvatar}
               onChange={(e) => setNewUserAvatar(e.target.value)}
             />
           </S.Form.Item>
           <S.FormAction>
-            { mode === 'edit' && (
+            {mode === 'edit' && (
               <SubmitButton
-                htmlType='button'
-                text='Удалить'
+                htmlType="button"
+                text="Удалить"
                 isLoading={isUserDeliting}
                 isDisabled={isUserEditing}
                 onClick={handleDelete}
-              />)
-            }
+              />
+            )}
             <div></div>
             <div>
               {mode === 'edit' ? (
-              <SubmitButton
-                htmlType='submit'
-                text='Сохранить'
-                isLoading={isUserEditing}
-                isDisabled={isUserDeliting}
-              />):
-              (<SubmitButton
-                htmlType='submit'
-                text='Создать'
-                isLoading={isUserCreating}
-              />)}
+                <SubmitButton
+                  htmlType="submit"
+                  text="Сохранить"
+                  isLoading={isUserEditing}
+                  isDisabled={isUserDeliting}
+                />
+              ) : (
+                <SubmitButton htmlType="submit" text="Создать" isLoading={isUserCreating} />
+              )}
               <SubmitButton
                 onClick={() => setIsModalOpen(false)}
-                htmlType='button'
+                htmlType="button"
                 isDisabled={isUserCreating || isUserDeliting || isUserEditing}
-                isLoading={isUserEditing }
-                text='Отмена'
+                isLoading={isUserEditing}
+                text="Отмена"
               />
             </div>
           </S.FormAction>
@@ -130,4 +139,4 @@ export const UserModal: React.FC<IUserModalProps> = ({isModalOpen, setIsModalOpe
       </Modal>
     </>
   );
-}
+};

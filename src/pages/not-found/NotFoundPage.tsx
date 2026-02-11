@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Result } from 'antd';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 export const NotFoundPage: React.FC = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <Result
@@ -11,9 +11,10 @@ export const NotFoundPage: React.FC = () => {
       title="404"
       subTitle="Извините, страница, которую вы посетили, не существует."
       extra={
-      <Button
-        onClick={() => navigate('/login')}
-        type="primary">На главную</Button>}
+        <Button onClick={() => navigate('/login')} type="primary">
+          На главную
+        </Button>
+      }
     />
-  )
-}
+  );
+};

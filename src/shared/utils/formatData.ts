@@ -1,8 +1,8 @@
-import dayjs from 'dayjs'
+import dayjs from 'dayjs';
 
 export const formatData = (date: string | Date | null | undefined): string => {
   if (!date) {
-    return 'Неизвестно'
+    return 'Неизвестно';
   }
-  return dayjs(date).format('DD.MM.YYYY')
-}
+  return dayjs(date).format('DD.MM.YYYY');
+};
