@@ -12,9 +12,10 @@ interface UserModalProps {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
   mode: ModalModes;
   onUserCreated: (newUser: IUserData) => void;
+  onUserUpdated: (updatedUser: IUserData) => void;
 }
 
-export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen, user, mode, onUserCreated}) => {
+export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen, user, mode, onUserCreated, onUserUpdated}) => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -50,7 +51,6 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
         name: user.name,
         avatar: user.avatar
       };
-      console.log(newUserAvatar, newUserName)
 
       if (newUserAvatar) {
         editingUser.avatar = newUserAvatar
@@ -60,11 +60,12 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
       }
 
       editUser({id: user.id, user: editingUser}, {
-        onSuccess: () => {
+        onSuccess: (updatedUser) => {
           notification.success({
             message: `Пользователь успешно обновлен!`,
           })
           setIsModalOpen(false)
+          onUserUpdated(updatedUser)
         }
       })
     }

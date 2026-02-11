@@ -7,6 +7,7 @@ import {SubmitButton} from "../../shared/ui/SubmitButton";
 import {useLogout} from "../../features/auth";
 import {UserModal} from "../../features/user-management";
 import {ModalModes} from "../../features/user-management/model/types";
+import { Empty } from 'antd';
 
 const USERS_ON_PAGE = 10;
 
@@ -61,6 +62,13 @@ const UsersPage: React.FC = () => {
     });
   };
 
+  const handleUserUpdated = (updatedUser: IUserData) => {
+    setUsers((prevUsers) =>
+     prevUsers.map(user =>
+       user.id === updatedUser.id ? updatedUser: user)
+    )
+  };
+
   useEffect(() => {
     if (data?.length === 0 && !isLoading) {
       message.info('Вы загрузили всех пользователей!');
@@ -76,6 +84,7 @@ const UsersPage: React.FC = () => {
           <S.Content>
             <List
               dataSource={users}
+              locale={{emptyText: <Empty description={'Пользователи не найдены'}/>}}
               renderItem={user=>
                 <UserCard
                   onClick={() => openModal(user)}
@@ -83,13 +92,15 @@ const UsersPage: React.FC = () => {
                   user={user}
                />}
             >
-              <S.LoadButton
-                loading={isLoading}
-                disabled={!hasMore}
-                onClick={loadMoreHandler}
-              >
-                Загрузить еще
-              </S.LoadButton>
+              {users.length !== 0 && (
+                <S.LoadButton
+                  loading={isLoading}
+                  disabled={!hasMore}
+                  onClick={loadMoreHandler}
+                >
+                  Загрузить еще
+                </S.LoadButton>
+              )}
             </List>
             <S.Actions>
               <SubmitButton
@@ -108,11 +119,12 @@ const UsersPage: React.FC = () => {
         </S.Container>
       </S.Wrapper>
       <UserModal
-        mode={modalMode}
         user={user}
+        mode={modalMode}
         isModalOpen={isModalOpen}
-        onUserCreated={handleUserCreated}
         setIsModalOpen={setIsModalOpen}
+        onUserCreated={handleUserCreated}
+        onUserUpdated={handleUserUpdated}
       />
     </>
   )

@@ -24,7 +24,7 @@ export const useAddUser = () => {
 export const useEditUser = () => {
   return useMutation({
     mutationFn: ({id, user}: {id: string, user: IUserCreateData}) => userApi.editUser(id, user),
-    onSuccess: ()=> queryClient.invalidateQueries({queryKey: ['users']}),
+    onSuccess: () => queryClient.invalidateQueries({queryKey: ['users']}),
     onError: (error) => {
       console.error('Ошибка при редактировании пользователя', error)
     }
