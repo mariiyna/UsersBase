@@ -9,3 +9,8 @@ export interface IUserData {
   avatar: string;
   id: string;
 }
+
+export interface IUserCreateData {
+  name: string;
+  avatar: string;
+}

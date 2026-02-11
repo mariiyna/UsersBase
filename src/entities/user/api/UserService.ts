@@ -1,6 +1,6 @@
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {queryClient, userApi} from "../../../shared";
-import {IUserData} from "../model/types";
+import {IUserCreateData} from "../model/types";
 
 export const useUsers =
   (page: number = 1, limit: number) => {
@@ -13,7 +13,30 @@ export const useUsers =
 
 export const useAddUser = () => {
   return useMutation({
-    mutationFn: (newUser:IUserData) => userApi.addUser(newUser),
+    mutationFn: (newUser:IUserCreateData) => userApi.addUser(newUser),
     onSuccess: ()=> queryClient.invalidateQueries({queryKey: ['users']}),
+    onError: (error) => {
+      console.error('Ошибка при создании пользователя', error)
+    }
+  })
+}
+
+export const useEditUser = () => {
+  return useMutation({
+    mutationFn: ({id, user}: {id: string, user: IUserCreateData}) => userApi.editUser(id, user),
+    onSuccess: () => queryClient.invalidateQueries({queryKey: ['users']}),
+    onError: (error) => {
+      console.error('Ошибка при редактировании пользователя', error)
+    }
+  })
+}
+
+export const useDeleteUser = () => {
+  return useMutation({
+    mutationFn: (id: string) => userApi.deleteUser(id),
+    onSuccess: () => queryClient.invalidateQueries({queryKey: ['users']}),
+    onError: (error) => {
+      console.error('Ошибка при удалении пользователя', error)
+    }
   })
 }
