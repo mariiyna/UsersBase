@@ -1,12 +1,12 @@
-import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
-import {Form, Input, Modal} from 'antd';
+import React, {Dispatch, SetStateAction, useEffect} from 'react';
+import {Input, Modal} from 'antd';
 import {SubmitButton} from "../../../shared/ui/SubmitButton";
 import {IUserModalFields, ModalModes} from "../model/types";
 import * as S from './UserModal.styles';
-import {IUserCreateData, IUserData, useAddUser, useDeleteUser, useEditUser} from "../../../entities";
-import {notification} from "antd/lib";
+import {IUserData} from "../../../entities";
+import {useUserModal} from "../model/useUserModal";
 
-interface UserModalProps {
+export interface IUserModalProps {
   user: IUserData | null;
   isModalOpen: boolean;
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -16,78 +16,20 @@ interface UserModalProps {
   onUserDeleted: (deletedUser: IUserData) => void;
 }
 
-export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen, user, mode, onUserCreated, onUserUpdated, onUserDeleted}) => {
-  const handleCancel = () => {
-    if (!isUserDeliting || !isUserEditing || !isUserCreating) {
-      setIsModalOpen(false);
-    }
-  };
-
-  const [form] = Form.useForm<IUserModalFields>()
-
-  const [newUserName, setNewUserName] = useState<string>('');
-  const [newUserAvatar, setNewUserAvatar] = useState<string>('');
-
-  const {mutate: addUser, isLoading: isUserCreating} = useAddUser();
-  const {mutate: editUser, isLoading: isUserEditing} = useEditUser()
-
-  const {mutate: deleteUser, isLoading: isUserDeliting} = useDeleteUser()
-
-  const HandleSubmit = () => {
-    if (mode === 'create' && newUserName && newUserAvatar) {
-      addUser({
-        name: newUserName,
-        avatar: newUserAvatar
-      }, {
-        onSuccess: (createdUser) => {
-          notification.success({
-            message: `Пользователь ${createdUser.name} успешно добавлен!`,
-          })
-          onUserCreated(createdUser)
-          setIsModalOpen(false)
-          clearFields()
-          form.resetFields()
-        }
-      })
-    } else if (mode === 'edit' && user) {
-      const editingUser: IUserCreateData = {
-        name: user.name,
-        avatar: user.avatar
-      };
-
-      if (newUserAvatar) {
-        editingUser.avatar = newUserAvatar
-      }
-      if (newUserName) {
-        editingUser.name = newUserName
-      }
-
-      editUser({id: user.id, user: editingUser}, {
-        onSuccess: (updatedUser) => {
-          notification.success({
-            message: `Пользователь успешно обновлен!`,
-          })
-          setIsModalOpen(false)
-          onUserUpdated(updatedUser)
-          clearFields()
-        }
-      })
-    }
-  }
-
-  const handleDelete = () => {
-    if (user) {
-      deleteUser(user.id, {
-        onSuccess: (deletedUser) => {
-          notification.success({
-            message: `Пользователь ${deletedUser.name} успешно удален!`,
-          })
-          setIsModalOpen(false);
-          onUserDeleted(user)
-        }
-      })
-    }
-  }
+export const UserModal: React.FC<IUserModalProps> = ({isModalOpen, setIsModalOpen, user, mode, onUserCreated, onUserUpdated, onUserDeleted}) => {
+  const {
+    isUserCreating,
+    isUserEditing,
+    isUserDeliting,
+    form,
+    handleSubmit,
+    handleDelete,
+    newUserAvatar,
+    newUserName,
+    setNewUserName,
+    setNewUserAvatar,
+    handleCloseIcon
+  } = useUserModal({mode, user, onUserCreated, onUserUpdated, onUserDeleted, setIsModalOpen, isModalOpen});
 
   useEffect(() => {
     if (mode === 'edit' && isModalOpen && user) {
@@ -101,24 +43,20 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
     }
   }, [user, isModalOpen]);
 
-  const clearFields = () => {
-    setNewUserName('')
-    setNewUserAvatar('')
-  }
-
   return (
     <>
       <Modal
         title={mode === 'edit'? 'Редактирование пользователя': 'Создание пользователя'}
         open={isModalOpen}
         footer={[]}
-        onCancel={handleCancel}
+        closable={false}
       >
+        <S.CloseIcon onClick={handleCloseIcon}/>
         <S.Form
           name="ModalForm"
           form={form}
           preserve={false}
-          onFinish={HandleSubmit}
+          onFinish={handleSubmit}
           autoComplete="off"
         >
           {mode === 'edit' && (<S.Form.Item<IUserModalFields>
