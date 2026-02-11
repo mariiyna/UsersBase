@@ -39,10 +39,8 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
             message: `Пользователь ${createdUser.name} успешно добавлен!`,
           })
           onUserCreated(createdUser)
-
           setIsModalOpen(false)
-          setNewUserName('')
-          setNewUserAvatar('')
+          clearFields()
           form.resetFields()
         }
       })
@@ -66,6 +64,7 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
           })
           setIsModalOpen(false)
           onUserUpdated(updatedUser)
+          clearFields()
         }
       })
     }
@@ -82,6 +81,12 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
       form.resetFields();
     }
   }, [user, isModalOpen]);
+
+
+  const clearFields = () => {
+    setNewUserName('')
+    setNewUserAvatar('')
+  }
 
   return (
     <>
