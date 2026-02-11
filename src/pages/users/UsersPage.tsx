@@ -69,6 +69,12 @@ const UsersPage: React.FC = () => {
     )
   };
 
+  const handleUserDeleted = (deletedUser: IUserData) => {
+    setUsers((prevUsers) =>
+      prevUsers.filter(user => user.id !== deletedUser.id)
+    )
+  };
+
   useEffect(() => {
     if (data?.length === 0 && !isLoading) {
       message.info('Вы загрузили всех пользователей!');
@@ -125,6 +131,7 @@ const UsersPage: React.FC = () => {
         setIsModalOpen={setIsModalOpen}
         onUserCreated={handleUserCreated}
         onUserUpdated={handleUserUpdated}
+        onUserDeleted={handleUserDeleted}
       />
     </>
   )

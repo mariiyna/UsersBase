@@ -23,6 +23,11 @@ class UserApi {
     const response = await api.put<IUserData>(`${this.path}/${id}`, user)
     return response.data
   }
+
+  async deleteUser(id: string): Promise<IUserData> {
+    const response = await api.delete<IUserData>(`${this.path}/${id}`)
+    return response.data
+  }
 }
 
 export const userApi = new UserApi()

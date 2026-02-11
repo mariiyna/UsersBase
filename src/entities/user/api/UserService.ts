@@ -30,3 +30,13 @@ export const useEditUser = () => {
     }
   })
 }
+
+export const useDeleteUser = () => {
+  return useMutation({
+    mutationFn: (id: string) => userApi.deleteUser(id),
+    onSuccess: () => queryClient.invalidateQueries({queryKey: ['users']}),
+    onError: (error) => {
+      console.error('Ошибка при удалении пользователя', error)
+    }
+  })
+}

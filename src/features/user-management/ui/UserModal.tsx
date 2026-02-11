@@ -3,7 +3,7 @@ import {Form, Input, Modal} from 'antd';
 import {SubmitButton} from "../../../shared/ui/SubmitButton";
 import {IUserModalFields, ModalModes} from "../model/types";
 import * as S from './UserModal.styles';
-import {IUserCreateData, IUserData, useAddUser, useEditUser} from "../../../entities";
+import {IUserCreateData, IUserData, useAddUser, useDeleteUser, useEditUser} from "../../../entities";
 import {notification} from "antd/lib";
 
 interface UserModalProps {
@@ -13,11 +13,14 @@ interface UserModalProps {
   mode: ModalModes;
   onUserCreated: (newUser: IUserData) => void;
   onUserUpdated: (updatedUser: IUserData) => void;
+  onUserDeleted: (deletedUser: IUserData) => void;
 }
 
-export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen, user, mode, onUserCreated, onUserUpdated}) => {
+export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen, user, mode, onUserCreated, onUserUpdated, onUserDeleted}) => {
   const handleCancel = () => {
-    setIsModalOpen(false);
+    if (!isUserDeliting || !isUserEditing || !isUserCreating) {
+      setIsModalOpen(false);
+    }
   };
 
   const [form] = Form.useForm<IUserModalFields>()
@@ -27,6 +30,8 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
 
   const {mutate: addUser, isLoading: isUserCreating} = useAddUser();
   const {mutate: editUser, isLoading: isUserEditing} = useEditUser()
+
+  const {mutate: deleteUser, isLoading: isUserDeliting} = useDeleteUser()
 
   const HandleSubmit = () => {
     if (mode === 'create' && newUserName && newUserAvatar) {
@@ -70,6 +75,20 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
     }
   }
 
+  const handleDelete = () => {
+    if (user) {
+      deleteUser(user.id, {
+        onSuccess: (deletedUser) => {
+          notification.success({
+            message: `Пользователь ${deletedUser.name} успешно удален!`,
+          })
+          setIsModalOpen(false);
+          onUserDeleted(user)
+        }
+      })
+    }
+  }
+
   useEffect(() => {
     if (mode === 'edit' && isModalOpen && user) {
       form.setFieldsValue({
@@ -81,7 +100,6 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
       form.resetFields();
     }
   }, [user, isModalOpen]);
-
 
   const clearFields = () => {
     setNewUserName('')
@@ -142,23 +160,30 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
               <SubmitButton
                 htmlType='button'
                 text='Удалить'
+                isLoading={isUserDeliting}
+                isDisabled={isUserEditing}
+                onClick={handleDelete}
               />)
             }
             <div></div>
             <div>
-              {mode === 'edit' ? ( <SubmitButton
+              {mode === 'edit' ? (
+              <SubmitButton
                 htmlType='submit'
                 text='Сохранить'
                 isLoading={isUserEditing}
-              />): (<SubmitButton
+                isDisabled={isUserDeliting}
+              />):
+              (<SubmitButton
                 htmlType='submit'
                 text='Создать'
                 isLoading={isUserCreating}
               />)}
               <SubmitButton
-                onClick={handleCancel}
+                onClick={() => setIsModalOpen(false)}
                 htmlType='button'
-                isLoading={isUserCreating || isUserEditing}
+                isDisabled={isUserCreating || isUserDeliting || isUserEditing}
+                isLoading={isUserEditing }
                 text='Отмена'
               />
             </div>
