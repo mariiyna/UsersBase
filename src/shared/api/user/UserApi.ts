@@ -1,4 +1,4 @@
-import {IUserCreateData, IUserData} from "../../../entities";
+import {IUserCreateData, IUserData, IUserEditData} from "../../../entities";
 import {api} from "../clients/AxiosClient";
 
 class UserApi {
@@ -16,6 +16,11 @@ class UserApi {
 
   async addUser(newUser: IUserCreateData): Promise<IUserData> {
     const response = await api.post<IUserData>(this.path, newUser)
+    return response.data
+  }
+
+  async editUser(id: string, user: IUserEditData): Promise<IUserData> {
+    const response = await api.patch<IUserData>(`${this.path}/${id}`, user)
     return response.data
   }
 }

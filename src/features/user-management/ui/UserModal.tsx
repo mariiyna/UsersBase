@@ -3,7 +3,7 @@ import {Form, Input, message, Modal} from 'antd';
 import {SubmitButton} from "../../../shared/ui/SubmitButton";
 import {IUserModalFields, ModalModes} from "../model/types";
 import * as S from './UserModal.styles';
-import {IUserData, useAddUser} from "../../../entities";
+import {IUserData, IUserEditData, useAddUser, useEditUser} from "../../../entities";
 import {notification} from "antd/lib";
 import {queryClient} from "../../../shared";
 
@@ -26,6 +26,7 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
   const [newUserAvatar, setNewUserAvatar] = useState<string>('');
 
   const {mutate: addUser, isLoading: isUserCreating} = useAddUser();
+  const {mutate: editUser, isLoading: isUserEditing} = useEditUser()
 
   const HandleSubmit = () => {
     if (mode === 'create' && newUserName && newUserAvatar) {
@@ -45,6 +46,30 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
           form.resetFields()
         }
       })
+    } else if (mode === 'edit' && user) {
+      const editingUser: IUserEditData = {};
+
+      if (newUserName !== user.name && newUserName) {
+        editingUser['name'] = newUserName
+      }
+      if (newUserAvatar !== user.avatar && newUserAvatar) {
+        editingUser['avatar'] = newUserAvatar
+      }
+
+      if (Object.keys(editingUser).length > 0) {
+        editUser({id: user.id, user: editingUser}, {
+          onSuccess: () => {
+            notification.success({
+              message: `Пользователь успешно обновлен!`,
+            })
+            // setIsModalOpen(false)
+          }
+        })
+      } else {
+        notification.success({
+          message: 'Внесите изменения перед сохранением!'
+        })
+      }
     }
   }
 
@@ -119,6 +144,7 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
               {mode === 'edit' ? ( <SubmitButton
                 htmlType='submit'
                 text='Сохранить'
+                isLoading={isUserEditing}
               />): (<SubmitButton
                 htmlType='submit'
                 text='Создать'
@@ -127,7 +153,7 @@ export const UserModal: React.FC<UserModalProps> = ({isModalOpen, setIsModalOpen
               <SubmitButton
                 onClick={handleCancel}
                 htmlType='button'
-                isLoading={isUserCreating}
+                isLoading={isUserCreating && isUserEditing}
                 text='Отмена'
               />
             </div>
